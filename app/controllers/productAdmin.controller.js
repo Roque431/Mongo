@@ -1,5 +1,8 @@
 const db = require("../models");
 const ProductosAdm = db.productadms;
+
+
+
 // Crear un nuevo producto
 exports.createProductAdm = (req, res) => {
     // Validar la solicitud
@@ -76,10 +79,11 @@ exports.updateProductByCodigo = (req, res) => {
 
 // Eliminar un producto por su codigo
 
+
 exports.deleteProductByCodigo = (req, res) => {
     const codigo = req.params.codigo; // Almacenar el código del parámetro en una variable
 
-    ProductosAdm.findOneAndDelete({ codigo }, (err, producto) => { // Buscar y eliminar el producto por su código
+    ProductosAdm.findOneAndDelete( {codigo} , (err, producto) => { // Buscar y eliminar el producto por su código
         if (err) {
             console.error(`Error al eliminar el producto con código ${codigo}:`, err); // Registrar el error en la consola
             return res.status(500).send({ message: "Error interno del servidor al eliminar el producto." }); // Responder con un error 500
@@ -89,7 +93,7 @@ exports.deleteProductByCodigo = (req, res) => {
             return res.status(404).send({ message: `No se encontró el producto con código ${codigo}.` });
         }
         // Si se elimina el producto correctamente, responder con un mensaje de éxito
-        res.send({ message: `Producto con código ${codigo} eliminado exitosamente.` });
+       return res.send({ message: `Producto con código ${codigo} eliminado exitosamente.` });
     });
 };
 

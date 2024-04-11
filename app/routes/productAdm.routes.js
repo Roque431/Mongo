@@ -39,7 +39,7 @@ module.exports = function(app) {
 
   // Ruta para actualizar un producto por su ID
   app.put(
-    "/api/products/:codigo",
+    "/api/products/",
     controller.updateProductByCodigo
   );
 
@@ -49,4 +49,3 @@ module.exports = function(app) {
     controller.deleteProductByCodigo
   );
 };
-
