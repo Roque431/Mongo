@@ -25,7 +25,7 @@ const db = require("./app/models");
 const Role = db.role;
 
 db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  .connect(`mongodb://adminusername:adminpassword@3.212.254.91:27017/`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })

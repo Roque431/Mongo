@@ -1,8 +1,6 @@
 const db = require("../models");
 const ProductosAdm = db.productadms;
 
-
-
 // Crear un nuevo producto
 exports.createProductAdm = (req, res) => {
     // Validar la solicitud
@@ -56,8 +54,9 @@ exports.getProductById = (req, res) => {
     });
 };
 
-// Actualizar un producto por su ID
+// Actualizar un producto por codigo
 exports.updateProductByCodigo = (req, res) => {
+    const codigo = req.params.codigo;
     if (!req.body) {
         return res.status(400).send({ message: "Los datos a actualizar no pueden estar vacíos." });
     }
@@ -69,7 +68,7 @@ exports.updateProductByCodigo = (req, res) => {
             return;
         }
         if (!producto) {
-            res.status(404).send({ message: `No se pudo actualizar el producto con código ${req.params.codigo}. Producto no encontrado.` });
+            res.status(404).send({ message: `No se pudo actualizar el producto con código ${codigo}. Producto no encontrado.` });
             return;
         }
         res.send({ message: "Producto actualizado exitosamente.", producto });
@@ -78,8 +77,6 @@ exports.updateProductByCodigo = (req, res) => {
 
 
 // Eliminar un producto por su codigo
-
-
 exports.deleteProductByCodigo = (req, res) => {
     const codigo = req.params.codigo; // Almacenar el código del parámetro en una variable
 

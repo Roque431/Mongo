@@ -4,19 +4,17 @@ const Productos = db.productos;
 // Crear un nuevo producto
 exports.createProduct = (req, res) => {
     // Validar la solicitud
-    if (!req.body.codigo || !req.body.cantidad || !req.body.nombre || !req.body.precioVenta || !req.body.cantidad || !req.body.subtotal || !req.body.turno) {
+    if (!req.body.codigo || !req.body.cantidad || !req.body.nombre || !req.body.precioVenta || !req.body.cantidad || !req.body.subtotal) {
         return res.status(400).send({ message: "Todos los campos son obligatorios." });
     }
 
     // Crear un nuevo producto
     const producto = new Productos({
         codigo: req.body.codigo,
-        categoria: req.body.categoria,
         nombre: req.body.nombre,
         precioVenta: req.body.precioVenta,
         cantidad: req.body.cantidad,
-        subtotal: req.body.precioVenta * req.body.cantidad,
-        turno: req.body.turno
+        subtotal: req.body.precioVenta
     });
 
     // Guardar el producto en la base de datos
@@ -40,20 +38,23 @@ exports.getAllProducts = (req, res) => {
     });
 };
 
-// Obtener un producto por su ID
-exports.getProductById = (req, res) => {
-    Productos.findById(req.params.id, (err, producto) => {
+// Obtener un producto por su 
+exports.getProductByName = (req, res) => {
+    const productName = req.params.name; // Nombre del producto pasado como parámetro
+
+    Productos.findOne({ nombre: productName }, (err, producto) => {
         if (err) {
             res.status(500).send({ message: err });
             return;
         }
         if (!producto) {
-            res.status(404).send({ message: `Producto con ID ${req.params.id} no encontrado.` });
+            res.status(404).send({ message: `Producto con nombre "${productName}" no encontrado.` });
             return;
         }
         res.send(producto);
     });
 };
+
 
 // Actualizar un producto por su ID
 exports.updateProductById = (req, res) => {
@@ -90,12 +91,3 @@ exports.deleteProductById = (req, res) => {
 };
 
 // Obtener productos por categoría
-exports.getProductsByCategory = async (req, res) => {
-    try {
-        const { categoria } = req.params;
-        const productos = await Productos.find({ categoria });
-        res.json(productos);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};

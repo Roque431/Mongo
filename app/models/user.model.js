@@ -7,7 +7,7 @@ const User = mongoose.model(
     password: String,
     turno: String,
     numCont: String,
-    clave: String,
+    codigo: String,
     
     roles: [
       {

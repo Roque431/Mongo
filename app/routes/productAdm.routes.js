@@ -33,13 +33,13 @@ module.exports = function(app) {
 
   // Ruta para obtener un producto por su ID
   app.get(
-    "/api/products/:id",
+    "/api/products/:codigo",
     controller.getProductById
   );
 
   // Ruta para actualizar un producto por su ID
   app.put(
-    "/api/products/",
+    "/api/products/:codigo",
     controller.updateProductByCodigo
   );
 

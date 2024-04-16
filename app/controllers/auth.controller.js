@@ -117,38 +117,43 @@ exports.signin = (req, res) => {
     });
 };
 
-exports.deleteUser = (req, res) => {
-  const id = req.params.id;
-  console.log(id);
-  User.findByIdAndRemove(id, (err, user) => {
+exports.deleteUserByClave = (req, res) => {
+  const clave = req.params.clave;
+
+  User.findOneAndDelete({clave}, (err, user) => {
     if (err) {
-      res.status(500).send({ message: err });
-      return;
+      console.error(`Error al eliminar el usuario por clave ${clave}:`,error);
+      return res.status(500).send({ message: "Error interno del servidor al eliminar el usurio" });
     }
     if (!user) {
-      res.status(404).send({ message: `No se encontró el usuario con id ${userId}.` });
-      return;
+      return res.status(404).send({ message: `No se encontró el usuario con clave ${clave}.` });
+      
     }
-    res.status(200).send({ message: "Usuario eliminado exitosamente." });
+    // Si se elimina el usuario correctamente, responder con un mensaje de Exito
+    return res.send({ message:  `Usuario con código ${clave} eliminado exitosamente.` });
   });
 };
 
 // Función para actualizar un usuario
-exports.updateUser = (req, res) => {
-  const id = req.params.id;
-console.log(id);
-  User.findByIdAndUpdate(id, (err, user) => {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
+  exports.updateUserByCodigo = (req, res) => {
+    const codigo = req.params.codigo;
+    if (!req.body) {
+      return res.status(400).send({ message: "Los datos a actualizar no pueden estar vacíos." });
     }
-    if (!user) {
-      res.status(404).send({ message: `No se encontró el usuario con id ${userId}.` });
-      return;
-    }
-    res.status(200).send({ message: "Usuario actualizado exitosamente."});
-  });
-};
+
+    User.findOneAndUpdate({ codigo: req.params.codigo }, req.body, { new: true, useFindAndModify: false },  (err, user) => {
+        if (err) {
+          console.error('Error al actualizar el usuario:', err);
+          res.status(500).send({ message: "Error al actualizar el usuario." });
+          return;
+      }
+      if (!user) {
+          res.status(404).send({ message: `No se pudo actualizar el usuario con código ${req.params.codigo}. Usuario no encontrado.` });
+          return;
+      }
+      res.send({ message: "Usuario actualizado exitosamente.", user });
+    });
+  };
 
 exports.getAllUsers = (req, res) => {
   User.find({}, (err, users) => {

@@ -1,5 +1,5 @@
 module.exports = {
-  HOST: "0.0.0.0",
+  HOST: "3.212.254.91",
   PORT: 27017,
   DB: "ProyeTiend"
 };

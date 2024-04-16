@@ -2,27 +2,32 @@ const controller = require("../controllers/product.controller");
 const { verifyProduct } = require("../middlewares");
 
 module.exports = function(app) {
-  // Middleware para configurar los encabezados CORS
   app.use(function(req, res, next) {
     res.header(
       "Access-Control-Allow-Origin",
-      "http://127.0.0.1:5500"
+      ""
     );
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept, x-access-token"
     );
     next();
+    
   });
-  
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 
   // Ruta para crear un producto
   app.post(
     "/api/products",
     [
-      verifyProduct.checkDuplicateCodigoOrNombre  
+      verifyProduct.checkDuplicateCodigoOrNombre
     ],
-    controller.createProduct 
+    controller.createProduct
   );
 
   // Ruta para obtener todos los productos
@@ -32,8 +37,11 @@ module.exports = function(app) {
   );
 
   // Ruta para obtener productos por categoría
-  app.get(
-    "/api/products/categoria/:categoria",
-    controller.getProductsByCategory
-  );
+  
+  //para obtener por nombre
+  app.get("/api/products/:name", controller.getProductByName);
+
+
 };
+
+  

@@ -36,8 +36,10 @@ module.exports = function(app) {
 
   app.get("/api/user", controller.getAllUsers); // es para logearse 
 
-  app.delete("/api/test/adminD/:id", controller.deleteUser);
+  app.delete("/api/test/adminD/:clave", 
+  controller.deleteUserByClave);
 
-  app.put("/api/test/adminU/:id", controller.updateUser);
+  app.put("/api/test/adminU/:codigo", 
+  controller.updateUserByCodigo);
 
 };
